@@ -1,0 +1,5 @@
+name: lllava
+channels:
+  - defaults
+prefix: /home/user/.conda/envs/lllava
+
