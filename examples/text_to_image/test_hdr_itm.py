@@ -104,12 +104,14 @@ def main():
         str_prompt = captions[idx % len(captions)]
         npy_save_name = str(Path(output_hdr_path) / f"img_{idx:03d}")
 
-        result = pipe(prompt=str_prompt, img_name=str(img_path), npy_save_name=npy_save_name, seed=seed).images
+        start_time = time.time()
+        result = pipe(prompt=str_prompt, img_name=str(img_path), npy_save_name=npy_save_name, seed=seed, model_path=model_path).images
 
         hdr = np.exp(result[1])
         hdr_bgr = cv2.cvtColor(hdr.astype(np.float32), cv2.COLOR_RGB2BGR)
         out_name = str(Path(output_hdr_path) / f"hdr_itm_{idx:03d}.hdr")
         cv2.imwrite(out_name, hdr_bgr)
+        dt = time.time() - start_time
 
         print(f"Saved {out_name} in {dt:.2f}s")
 

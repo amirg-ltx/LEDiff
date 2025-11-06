@@ -864,6 +864,7 @@ class StableDiffusionITMPipeline(
         img_name: Union[str, List[str]] = None,
         npy_save_name: Union[str, List[str]] = None,
         seed: Optional[int] = None,
+        model_path: Optional[str] = None,
         height: Optional[int] = None,
         width: Optional[int] = None,
         num_inference_steps: int = 50,
@@ -1239,7 +1240,19 @@ class StableDiffusionITMPipeline(
 
         if not output_type == "latent":
             
-            pretrained_model_path = "/HPS/RawDiff/work/LED/sd_model/vae/merge_model.pth"#"/sensei-fs/users/wchao/Codes/diffusers/resutls/sd_model/StabelDiffusion_weights/vae/merge_model.pth"
+            # Construct path to merge_model.pth from model_path parameter
+            if model_path is not None:
+                # Try vae/merge_model.pth first (most common location)
+                pretrained_model_path = os.path.join(model_path, "vae", "merge_model.pth")
+                if not os.path.exists(pretrained_model_path):
+                    # Fallback to merge_model/merge_model.pth
+                    pretrained_model_path = os.path.join(model_path, "merge_model", "merge_model.pth")
+                if not os.path.exists(pretrained_model_path):
+                    # Last resort: use the hardcoded path as fallback
+                    pretrained_model_path = "/HPS/RawDiff/work/LED/sd_model/vae/merge_model.pth"
+            else:
+                # If model_path not provided, use hardcoded path (backward compatibility)
+                pretrained_model_path = "/HPS/RawDiff/work/LED/sd_model/vae/merge_model.pth"
 
             # 实例化 FeatureFusion 类
             net = FeatureFusion(in_channels=4, kernel_size=1, padding=0).to(device)

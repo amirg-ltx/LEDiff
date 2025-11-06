@@ -6,3 +6,11 @@ ftfy
 tensorboard
 Jinja2
 peft==0.7.0
+# Image processing and scientific computing
+opencv-python
+scipy
+numpy
+# Video export support (required by diffusers export_utils)
+ffmpeg-python
+# PyTorch (if not already installed)
+torch
