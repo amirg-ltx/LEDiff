@@ -55,3 +55,4 @@ echo "        --output_hdr_path /home/user/outputs/ \\"
 echo "        --seed 42"
 echo ""
 
+
